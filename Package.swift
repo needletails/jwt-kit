@@ -14,7 +14,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/needletails/swift-crypto.git", branch: "trait/force-build-swift-crypto-api"),
-        .package(url: "https://github.com/apple/swift-certificates.git", from: "1.15.0"),
+        .package(url: "https://github.com/needletails/swift-certificates.git", branch: "main"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     ],
     targets: [
