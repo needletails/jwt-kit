@@ -1,11 +1,11 @@
-// swift-tools-version:6.0
+// swift-tools-version:6.1
 import PackageDescription
 
 let package = Package(
     name: "jwt-kit",
     platforms: [
         .macOS(.v13),
-        .iOS(.v15),
+        .iOS(.v16),
         .tvOS(.v15),
         .watchOS(.v8),
     ],
@@ -13,7 +13,7 @@ let package = Package(
         .library(name: "JWTKit", targets: ["JWTKit"])
     ],
     dependencies: [
-        .package(url: "https://github.com/needletails/swift-crypto.git", branch: "trait/force-build-swift-crypto-api"),
+        .package(url: "https://github.com/needletails/swift-crypto.git", branch: "trait/force-build-swift-crypto-api", traits: ["FORCE_BUILD_SWIFT_CRYPTO_API"]),
         .package(url: "https://github.com/needletails/swift-certificates.git", branch: "main"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
     ],
