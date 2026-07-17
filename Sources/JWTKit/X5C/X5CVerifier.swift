@@ -148,9 +148,8 @@ public struct X5CVerifier: Sendable {
         let parser = DefaultJWTParser(jsonDecoder: jsonDecoder)
         let (header, payload, _) = try parser.parse(token, as: Payload.self)
 
-        // Ensure the algorithm used is ES256, as it's the only supported one (for now)
-        guard let headerAlg = header.alg, headerAlg == "ES256" else {
-            throw JWTError.invalidX5CChain(reason: "Unsupported algorithm: \(String(describing: header.alg))")
+        guard let rawAlg = header.alg, let headerAlg = JWK.Algorithm(rawValue: rawAlg) else {
+            throw JWTError.unsupportedAlgorithm(alg: header.alg)
         }
 
         // Ensure the x5c header parameter is present and not empty
@@ -201,9 +200,62 @@ public struct X5CVerifier: Sendable {
         }
 
         // Assuming the chain is valid, verify the token was signed by the valid certificate
-        let ecdsaKey = try ES256PublicKey(certificate: certificates[0].serializeAsPEM().pemString)
-        let signer = JWTSigner(algorithm: ECDSASigner(key: ecdsaKey), parser: parser)
+        let signer = try getSigner(for: headerAlg, certificate: certificates[0], parser: parser)
 
         return try await signer.verify(token)
+    }
+}
+
+extension X5CVerifier {
+    func getSigner(for alg: JWK.Algorithm, certificate: Certificate, parser: any JWTParser) throws -> JWTSigner {
+        switch alg {
+        case .es256:
+            let ecdsaKey = try ES256PublicKey(certificate: certificate.serializeAsPEM().pemString)
+            return JWTSigner(algorithm: ECDSASigner(key: ecdsaKey), parser: parser)
+        case .es384:
+            let ecdsaKey = try ES384PublicKey(certificate: certificate.serializeAsPEM().pemString)
+            return JWTSigner(algorithm: ECDSASigner(key: ecdsaKey), parser: parser)
+        case .es512:
+            let ecdsaKey = try ES512PublicKey(certificate: certificate.serializeAsPEM().pemString)
+            return JWTSigner(algorithm: ECDSASigner(key: ecdsaKey), parser: parser)
+        case .eddsa:
+            let eddsaKey = try EdDSA.PublicKey(pem: certificate.publicKey.serializeAsPEM().pemString)
+            return JWTSigner(algorithm: EdDSASigner(key: eddsaKey), parser: parser)
+        case .rs256, .ps256:
+            let rsaKey = try Insecure.RSA.PublicKey(pem: certificate.publicKey.serializeAsPEM().pemString)
+            return JWTSigner(
+                algorithm: RSASigner(
+                    key: rsaKey,
+                    algorithm: .sha256,
+                    name: "",
+                    padding: alg == .rs256 ? .insecurePKCS1v1_5 : .PSS
+                ),
+                parser: parser
+            )
+        case .rs384, .ps384:
+            let rsaKey = try Insecure.RSA.PublicKey(pem: certificate.publicKey.serializeAsPEM().pemString)
+            return JWTSigner(
+                algorithm: RSASigner(
+                    key: rsaKey,
+                    algorithm: .sha384,
+                    name: "",
+                    padding: alg == .rs384 ? .insecurePKCS1v1_5 : .PSS
+                ),
+                parser: parser
+            )
+        case .rs512, .ps512:
+            let rsaKey = try Insecure.RSA.PublicKey(pem: certificate.publicKey.serializeAsPEM().pemString)
+            return JWTSigner(
+                algorithm: RSASigner(
+                    key: rsaKey,
+                    algorithm: .sha512,
+                    name: "",
+                    padding: alg == .rs512 ? .insecurePKCS1v1_5 : .PSS
+                ),
+                parser: parser
+            )
+        default:
+            throw JWTError.unsupportedAlgorithm(alg: alg.rawValue)
+        }
     }
 }
