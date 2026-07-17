@@ -7,10 +7,8 @@ import Foundation
 #endif
 
 @_spi(PostQuantum)
-@available(iOS 26.0, macOS 26.0, watchOS 26.0, tvOS 26.0, *)
 public enum MLDSA: Sendable {}
 
-@available(iOS 26.0, macOS 26.0, watchOS 26.0, tvOS 26.0, *)
 extension MLDSA {
     public struct PublicKey<KeyType>: MLDSAKey where KeyType: MLDSAType {
         public typealias MLDSAType = KeyType
@@ -28,8 +26,6 @@ extension MLDSA {
         }
     }
 }
-
-@available(iOS 26.0, macOS 26.0, watchOS 26.0, tvOS 26.0, *)
 extension MLDSA {
     public struct PrivateKey<KeyType>: MLDSAKey where KeyType: MLDSAType {
         public typealias MLDSAType = KeyType

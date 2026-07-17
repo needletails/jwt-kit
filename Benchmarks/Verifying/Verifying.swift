@@ -71,7 +71,6 @@ let benchmarks = {
         }
     }
 
-    if #available(iOS 26, macOS 26, tvOS 26, watchOS 26, *) {
         Benchmark("MLDSA65") { benchmark in
             let mldsa65PrivateKeySeed = Data(fromHexEncodedString: "70cefb9aed5b68e018b079da8284b9d5cad5499ed9c265ff73588005d85c225c")!
             let keyCollection = try await JWTKeyCollection()
@@ -82,5 +81,4 @@ let benchmarks = {
                 _ = try await keyCollection.verify(token, as: Payload.self)
             }
         }
-    }
 }

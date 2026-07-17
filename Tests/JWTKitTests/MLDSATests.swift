@@ -6,7 +6,6 @@ import Testing
 @Suite("MLDSA Tests")
 struct MLDSATests {
     @Test("MLDSA65 Signing")
-    @available(iOS 26.0, macOS 26.0, watchOS 26.0, tvOS 26.0, *)
     func sign65() async throws {
         struct Foo: JWTPayload {
             var bar: Int
@@ -26,7 +25,6 @@ struct MLDSATests {
     }
 
     @Test("MLDSA87 Signing")
-    @available(iOS 26.0, macOS 26.0, watchOS 26.0, tvOS 26.0, *)
     func sign87() async throws {
         struct Foo: JWTPayload {
             var bar: Int

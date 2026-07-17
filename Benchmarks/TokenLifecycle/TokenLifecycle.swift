@@ -72,7 +72,6 @@ let benchmarks = {
         }
     }
 
-    if #available(iOS 26, macOS 26, tvOS 26, watchOS 26, *) {
         Benchmark("MLDSA65") { benchmark in
             for _ in benchmark.scaledIterations {
                 let key = try MLDSA65PrivateKey(seedRepresentation: Data(fromHexEncodedString: mldsa65PrivateKeySeed)!)
@@ -82,7 +81,6 @@ let benchmarks = {
                 _ = try await keyCollection.verify(token, as: Payload.self)
             }
         }
-    }
 }
 
 let payload = Payload(name: "Kyle", admin: true)
