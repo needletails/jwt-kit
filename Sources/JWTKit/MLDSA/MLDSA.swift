@@ -6,9 +6,11 @@ import FoundationEssentials
 import Foundation
 #endif
 
+@available(anyAppleOS 26.0, *)
 @_spi(PostQuantum)
 public enum MLDSA: Sendable {}
 
+@available(anyAppleOS 26.0, *)
 extension MLDSA {
     public struct PublicKey<KeyType>: MLDSAKey where KeyType: MLDSAType {
         public typealias MLDSAType = KeyType
@@ -26,6 +28,8 @@ extension MLDSA {
         }
     }
 }
+
+@available(anyAppleOS 26.0, *)
 extension MLDSA {
     public struct PrivateKey<KeyType>: MLDSAKey where KeyType: MLDSAType {
         public typealias MLDSAType = KeyType

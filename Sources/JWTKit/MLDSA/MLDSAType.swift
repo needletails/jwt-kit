@@ -1,5 +1,6 @@
 import Crypto
 
+@available(anyAppleOS 26.0, *)
 @_spi(PostQuantum)
 public protocol MLDSAType {
     associatedtype PrivateKey: MLDSAPrivateKey
@@ -7,11 +8,13 @@ public protocol MLDSAType {
     static var name: String { get }
 }
 
+@available(anyAppleOS 26.0, *)
 @_spi(PostQuantum)
 extension MLDSA65: MLDSAType {
     public static var name: String { "ML-DSA-65" }
 }
 
+@available(anyAppleOS 26.0, *)
 @_spi(PostQuantum)
 extension MLDSA87: MLDSAType {
     public static var name: String { "ML-DSA-87" }

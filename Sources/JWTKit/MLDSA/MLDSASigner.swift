@@ -5,6 +5,8 @@ import FoundationEssentials
 #else
 import Foundation
 #endif
+
+@available(anyAppleOS 26.0, *)
 struct MLDSASigner<Key: MLDSAKey>: JWTAlgorithm, Sendable {
     let privateKey: MLDSA.PrivateKey<Key.MLDSAType>?
     let publicKey: MLDSA.PublicKey<Key.MLDSAType>

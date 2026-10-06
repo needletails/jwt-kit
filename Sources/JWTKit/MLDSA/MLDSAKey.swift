@@ -4,6 +4,7 @@ import FoundationEssentials
 import Foundation
 #endif
 
+@available(anyAppleOS 26.0, *)
 @_spi(PostQuantum)
 public protocol MLDSAKey: Sendable {
     associatedtype MLDSAType: JWTKit.MLDSAType

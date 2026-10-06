@@ -1,4 +1,6 @@
 extension JWTKeyCollection {
+    
+    @available(anyAppleOS 26.0, *)
     @_spi(PostQuantum)
     @discardableResult
     public func add(
